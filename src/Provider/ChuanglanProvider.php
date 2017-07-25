@@ -85,10 +85,13 @@ class ChuanglanProvider extends AbstractProvider implements ProviderInterface
 	public function send(Request $request){
 		$rd = $this->request->get('rd');
 		$msg = $this->request->get('msg');
-		$phone = $this->request->get('mobile');
+		$mobile = $this->request->get('mobile');
+		if(empty($msg) || empty($mobile)){
+			return ['state'=>3001,'msg'=>'参数错误'];
+		}
 		$response = $this->getHttpClient()->get($this->getSendUrl().'&'.http_build_query([
-			'msg' => empty($msg)?'':$msg,
-			'phone' => empty($phone)?'':$phone,
+			'msg' => '【'.$this->clientSign.'】'.$msg,
+			'phone' => empty($mobile)?'':$mobile,
 			'rd' => empty($rd)?'1':$rd,
 			]));
 		$result = $response->getBody()->getContents();

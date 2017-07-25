@@ -34,11 +34,25 @@ abstract class AbstractProvider implements ProviderContract
     protected $clientId;
 
     /**
+     * The client key.
+     *
+     * @var string
+     */
+    protected $clientKey;
+
+    /**
      * The client secret.
      *
      * @var string
      */
     protected $clientSecret;
+
+    /**
+     * The client sign.
+     *
+     * @var string
+     */
+    protected $clientSign;
 
     /**
      * The custom parameters to be sent with the request.
@@ -85,12 +99,14 @@ abstract class AbstractProvider implements ProviderContract
      * @param  array  $guzzle
      * @return void
      */
-    public function __construct(Request $request, $clientId, $clientSecret, $guzzle = [])
+    public function __construct(Request $request, $config)
     {
-        $this->guzzle = $guzzle;
         $this->request = $request;
-        $this->clientId = $clientId;
-        $this->clientSecret = $clientSecret;
+        $this->guzzle = isset($config['guzzle'])?$config['guzzle']:[];
+        $this->clientId = empty($config['client_id'])?'':$config['client_id'];
+        $this->clientKey = empty($config['client_key'])?'':$config['client_key'];
+        $this->clientSecret = empty($config['client_secret'])?'':$config['client_secret'];
+        $this->clientSign = empty($config['client_sign'])?'':$config['client_sign'];
     }
 
     /**
@@ -117,8 +133,6 @@ abstract class AbstractProvider implements ProviderContract
     {
         $fields = [
             'client_id' => $this->clientId,
-            'scope' => $this->formatScopes($this->getScopes(), $this->scopeSeparator),
-            'response_type' => 'code',
         ];
 
         if ($this->usesState()) {

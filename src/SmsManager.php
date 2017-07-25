@@ -7,6 +7,7 @@ use Illuminate\Support\Manager;
 use Utils\Provider\AliyunProvider;
 use Utils\Provider\ChuanglanProvider;
 use Utils\Provider\ChuanglanOldProvider;
+use Utils\Provider\ChuanglanVoiceProvider;
 use Utils\Provider\MontnetsProvider;
 use Utils\Provider\InvalidArgumentException;
 
@@ -70,6 +71,20 @@ class SmsManager extends Manager implements Contracts\Factory
      *
      * @return \Utils\Provider\AbstractProvider
      */
+    protected function createChuanglanVoiceDriver()
+    {
+        $config = $this->app['config']['services.chuanglanvoice'];
+
+        return $this->buildProvider(
+            ChuanglanVoiceProvider::class, $config
+        );
+    }
+
+    /**
+     * Create an instance of the specified driver.
+     *
+     * @return \Utils\Provider\AbstractProvider
+     */
     protected function createMontnetsDriver()
     {
         $config = $this->app['config']['services.montnets'];
@@ -89,25 +104,9 @@ class SmsManager extends Manager implements Contracts\Factory
     public function buildProvider($provider, $config)
     {
         return new $provider(
-            $this->app['request'], $config['client_id'],
-            $config['client_secret'],
-            Arr::get($config, 'guzzle', [])
+            $this->app['request'], 
+            $config
         );
-    }
-
-    /**
-     * Format the server configuration.
-     *
-     * @param  array  $config
-     * @return array
-     */
-    public function formatConfig(array $config)
-    {
-        return array_merge([
-            'identifier' => $config['client_id'],
-            'secret' => $config['client_secret'],
-            'callback_uri' => value($config['redirect']),
-        ], $config);
     }
 
     /**
