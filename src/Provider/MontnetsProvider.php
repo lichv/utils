@@ -52,6 +52,10 @@ class MontnetsProvider extends AbstractProvider implements ProviderInterface
 		);
 
 	public function send(Request $request,$type='single_send'){
+		$mobile = $request->input('mobile');
+		if(!empty($mobile) && strpos($mobile, ',')!==false){
+			$type = 'batch_send';
+		}
 		if($type=='batch_send'){
 			$result = $this->batch_send($request);
 		}elseif ($type=='multi_send') {
