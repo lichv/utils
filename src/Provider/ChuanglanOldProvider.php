@@ -77,13 +77,11 @@ class ChuanglanOldProvider extends AbstractProvider implements ProviderInterface
 	}
 
 	public function send(Request $request){
-		$rd = $this->request->get('rd');
-		$msg = $this->request->get('msg');
-		$phone = $this->request->get('mobile');
+		$input = $request->all();
 		$response = $this->getHttpClient()->get($this->getSendUrl().'&'.http_build_query([
-			'msg' => empty($msg)?'':$msg,
-			'mobile' => empty($phone)?'':$phone,
-			'needstatus' => empty($rd)?'true':$rd,
+			'msg' => empty($input['msg'])?'':$input['msg'],
+			'mobile' => empty($input['mobile'])?'':$input['mobile'],
+			'needstatus' => empty($input['rd'])?'true':$input['rd'],
 			]));
 		$result = $response->getBody()->getContents();
 		return $this->parse_send_result($result);

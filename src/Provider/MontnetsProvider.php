@@ -74,7 +74,7 @@ class MontnetsProvider extends AbstractProvider implements ProviderInterface
 			}
 		}
 		if(empty($input['mobile']) || empty($input['msg'])){
-			return ['state'=>3001,'msg'=>'参数错误'];
+			return ['state'=>3001,'msg'=>'参数错误','data'=>$request->all()];
 		}
 		$response = $this->getHttpClient()->post('http://61.145.229.28:7902/sms/v2/std/single_send', [
 			'form_params' => [
@@ -97,7 +97,7 @@ class MontnetsProvider extends AbstractProvider implements ProviderInterface
 			}
 		}
 		if(empty($input['mobile']) || empty($input['msg'])){
-			return ['state'=>3001,'msg'=>'参数错误'];
+			return ['state'=>3001,'msg'=>'参数错误','data'=>$request->all()];
 		}
 		$response = $this->getHttpClient()->post('http://61.145.229.28:7902/sms/v2/std/batch_send', [
 			'form_params' => [
@@ -116,7 +116,7 @@ class MontnetsProvider extends AbstractProvider implements ProviderInterface
 	public function multi_send(Request $request){
 		$multimt = $request->input('multimt');
 		if(empty($multimt)){
-			return ['state'=>3001,'msg'=>'参数错误'];
+			return ['state'=>3001,'msg'=>'参数错误','data'=>$request->all()];
 		}
 
 		foreach ($multimt as $key => $value) {

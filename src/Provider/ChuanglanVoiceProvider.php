@@ -67,17 +67,19 @@ class ChuanglanVoiceProvider extends AbstractProvider implements ProviderInterfa
 
 	public function send(Request $request){
 		date_default_timezone_set("Asia/Shanghai");
-		$vfcode = $this->request->get('code');
-		$phone = $this->request->get('mobile');
+		$input = $request->all();
 		$timestamp = date("YmdHis");
 
+		if(empty($input['vfcode']) || empty($input['mobile'])){
+			return ['state'=>3001,'msg'=>'参数错误','data'=>$request->all()];
+		}
 		$data = [
 			'voiceinfo'=>[
 				'organization' => $this->clientId,
-				'phonenum' => $phone,
+				'phonenum' => $input['mobile'],
 				'timestamp' => $timestamp,
-				'content' => md5($this->clientKey.$phone.$this->clientSecret.$timestamp),
-				'vfcode' => $vfcode,
+				'content' => md5($this->clientKey.$input['mobile'].$this->clientSecret.$timestamp),
+				'vfcode' => $input['vfcode'],
 				'shownum' => '95213141',
 				'uniqueid' => uniqid(),
 			],
