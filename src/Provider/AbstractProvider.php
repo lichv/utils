@@ -25,6 +25,12 @@ abstract class AbstractProvider implements ProviderContract
      * @var \GuzzleHttp\Client
      */
     protected $httpClient;
+    /**
+     * The base url of 253SMS API.
+     *
+     * @var string
+     */
+    protected $baseUrl = '';
 
     /**
      * The client ID.
@@ -103,6 +109,7 @@ abstract class AbstractProvider implements ProviderContract
     {
         $this->request = $request;
         $this->guzzle = isset($config['guzzle'])?$config['guzzle']:[];
+        $this->baseUrl = isset($config['url'])?$config['url']:[];
         $this->clientId = empty($config['client_id'])?'':$config['client_id'];
         $this->clientKey = empty($config['client_key'])?'':$config['client_key'];
         $this->clientSecret = empty($config['client_secret'])?'':$config['client_secret'];

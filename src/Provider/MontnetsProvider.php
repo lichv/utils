@@ -19,17 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @link http://wiki.connect.qq.com/oauth2-0%E7%AE%80%E4%BB%8B [QQ - OAuth 2.0 登录QQ]
  */
-class MontnetsProvider extends AbstractProvider implements ProviderInterface
-{
-	/**
-	 * The base url of 253SMS API.
-	 *
-	 * @var string
-	 */
-	protected $baseUrl = 'http://61.145.229.28:7902';
-
-
-	protected $type = 'single_send';
+class MontnetsProvider extends AbstractProvider implements ProviderInterface{
 
 	/**
 	 * error_code
@@ -76,7 +66,7 @@ class MontnetsProvider extends AbstractProvider implements ProviderInterface
 		if(empty($input['mobile']) || empty($input['msg'])){
 			return ['state'=>3001,'msg'=>'参数错误','data'=>$request->all()];
 		}
-		$response = $this->getHttpClient()->post('http://61.145.229.28:7902/sms/v2/std/single_send', [
+		$response = $this->getHttpClient()->post($this->baseUrl.'/sms/v2/std/single_send', [
 			'form_params' => [
 			'userid' => $this->clientId,
 			'pwd'=>md5(strtoupper($this->clientId).'00000000'.$this->clientSecret.date('mdHis')),
@@ -99,7 +89,7 @@ class MontnetsProvider extends AbstractProvider implements ProviderInterface
 		if(empty($input['mobile']) || empty($input['msg'])){
 			return ['state'=>3001,'msg'=>'参数错误','data'=>$request->all()];
 		}
-		$response = $this->getHttpClient()->post('http://61.145.229.28:7902/sms/v2/std/batch_send', [
+		$response = $this->getHttpClient()->post($this->baseUrl.'/sms/v2/std/batch_send', [
 			'form_params' => [
 			'userid' => $this->clientId,
 			'pwd'=>md5(strtoupper($this->clientId).'00000000'.$this->clientSecret.date('mdHis')),
@@ -122,7 +112,7 @@ class MontnetsProvider extends AbstractProvider implements ProviderInterface
 		foreach ($multimt as $key => $value) {
 			$multimt[$key]['content'] = urlencode (array_iconv($value['content'],'utf8','gbk'));
 		}
-		$response = $this->getHttpClient()->post('http://61.145.229.28:7902/sms/v2/std/multi_send', [
+		$response = $this->getHttpClient()->post($this->baseUrl.'/sms/v2/std/multi_send', [
 			'form_params' => [
 			'userid' => $this->clientId,
 			'pwd'=>md5(strtoupper($this->clientId).'00000000'.$this->clientSecret.date('mdHis')),
@@ -135,7 +125,7 @@ class MontnetsProvider extends AbstractProvider implements ProviderInterface
 	}
 
 	public function balance(Request $request){
-		$response = $this->getHttpClient()->post('http://61.145.229.28:7902/sms/v2/std/get_balance', [
+		$response = $this->getHttpClient()->post($this->baseUrl.'/sms/v2/std/get_balance', [
 			'form_params' => [
 			'userid' => $this->clientId,
 			'pwd'=>md5(strtoupper($this->clientId).'00000000'.$this->clientSecret.date('mdHis')),

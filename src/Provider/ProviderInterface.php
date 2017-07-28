@@ -4,8 +4,7 @@ namespace Utils\Provider;
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface ProviderInterface
-{
+interface ProviderInterface{
     /**
      * Redirect the user to the authentication page for the provider.
      *

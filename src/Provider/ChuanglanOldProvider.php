@@ -19,14 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @link http://wiki.connect.qq.com/oauth2-0%E7%AE%80%E4%BB%8B [QQ - OAuth 2.0 登录QQ]
  */
-class ChuanglanOldProvider extends AbstractProvider implements ProviderInterface
-{
-	/**
-	 * The base url of 253SMS API.
-	 *
-	 * @var string
-	 */
-	protected $baseUrl = 'http://sapi.253.com';
+class ChuanglanOldProvider extends AbstractProvider implements ProviderInterface{
 
 	/**
 	 * error_code
