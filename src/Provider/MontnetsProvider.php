@@ -136,6 +136,34 @@ class MontnetsProvider extends AbstractProvider implements ProviderInterface{
 		return $this->parse_result($result);
 	}
 
+	public function result(Request $request){
+		$retsize = $request->input('retsize');
+		$response = $this->getHttpClient()->post($this->baseUrl.'/sms/v2/std/get_mo', [
+			'form_params' => [
+			'userid' => $this->clientId,
+			'pwd'=>md5(strtoupper($this->clientId).'00000000'.$this->clientSecret.date('mdHis')),
+			'timestamp'=>date('mdHis'),
+			'retsize'=>empty($retsize)?200:$retsize,
+			],
+			]);
+		$result = $response->getBody()->getContents();
+		return $this->parse_result($result);
+	}
+
+	public function report(Request $request){
+		$retsize = $request->input('retsize');
+		$response = $this->getHttpClient()->post($this->baseUrl.'/sms/v2/std/get_rpt', [
+			'form_params' => [
+			'userid' => $this->clientId,
+			'pwd'=>md5(strtoupper($this->clientId).'00000000'.$this->clientSecret.date('mdHis')),
+			'timestamp'=>date('mdHis'),
+			'retsize'=>empty($retsize)?200:$retsize,
+			],
+			]);
+		$result = $response->getBody()->getContents();
+		return $this->parse_result($result);
+	}
+
 	protected function getSign($clientId,$clientSecret){
 		return md5($clientId.'00000000'.$clientSecret.date('mdHis'));
 	}
