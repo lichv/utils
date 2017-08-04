@@ -116,7 +116,7 @@ class MontnetsProvider extends AbstractProvider implements ProviderInterface{
 			'form_params' => [
 			'userid' => $this->clientId,
 			'pwd'=>md5(strtoupper($this->clientId).'00000000'.$this->clientSecret.date('mdHis')),
-			'multimt'=>urldecode(json_encode($multimt)),
+			'multimt'=>json_encode($multimt),
 			'timestamp'=>date('mdHis'),
 			],
 			]);
