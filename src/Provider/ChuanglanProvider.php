@@ -80,7 +80,7 @@ class ChuanglanProvider extends AbstractProvider implements ProviderInterface{
 			return ['state'=>3001,'msg'=>'参数错误','data'=>$request->all()];
 		}
 		$msg = '【'.$this->clientSign.'】'.$input['msg'];
-		if(strpos($msg, '%')!==false){
+		if(strpos($msg, '%')!==false && strpos($msg, '%25')===false){
 			$msg = urlencode($msg);
 		}
 		$response = $this->getHttpClient()->get($this->getSendUrl().'&'.http_build_query([
